@@ -74,3 +74,30 @@ if in_str.find("dhe") != -1:
     print("Key A: " + str(A))
     print("Key B: " + str(B))
     print("Session Key: " + str(session_a) + "|" + str(session_b))
+    
+if in_str.find("poly_red") != -1:
+    num = n_c_string(in_str)
+    relation = int(num[0], 16)
+    rel_bin = bin(relation)
+
+    poly = int(num[1], 16)
+    poly_bin = bin(poly)
+
+    out = ""
+
+    dist = len(poly_bin) - len(rel_bin)
+    while dist >= 0:
+        t = (relation << dist)
+        poly = t ^ poly
+        print(f"{hex(t)} xor {hex(poly)}")
+        dist = len(bin(poly)) - len(rel_bin)
+
+    l_str = len(bin(poly)[2:])
+    for n in range(0, l_str):
+        p_str = str(bin(poly)[2:])
+        if p_str[l_str - (n + 1)] == '1':
+            out = f"x^{n} + " + out
+            if out.rfind("x^0") != -1:
+                out.replace("x^0", "1")
+
+    print(out)
