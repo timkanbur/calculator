@@ -1,3 +1,6 @@
+out_str = ""
+
+
 def c_string(s):
     s = s[s.rfind("(") + 1:s.rfind(")")]
     s = s.split(",")
@@ -20,7 +23,13 @@ def valid_string(string, val):
 def main():
     print("")
     in_str = input("Rechne: ")
-    out_str = ""
+    global out_str
+    if in_str.find("ans") != -1:
+        if str(out_str) != "":
+            in_str = in_str.replace("ans", str(out_str))
+        else:
+            print("ans ist nicht definiert")
+            return
 
     if in_str == "":
         print("Keine valide Eingabe")
@@ -39,13 +48,13 @@ def main():
         print("Diffie–Hellman key exchange (b^key mod N):       dhe(N,b,key_a,key_b)")
         print("Square and multiply (b^e mod N):                 sam(b,e,N)")
         print("Polynomreduktion (relation, polynom):            poly_red(relation,polynom)\n")
+        print("Variable für vorheriges Ergebnis:                ans")
         print("Rechner beenden:                                 exit")
         return
 
     if in_str.find("add") != -1:
         num = c_string(in_str)
         if valid_string(num, 2):
-            print(len(num))
             out_str = int(num[0]) + int(num[1])
             print(f"{num[0]} + {num[1]} = {out_str}")
         return
@@ -117,6 +126,7 @@ def main():
                 print(f"    x{i} = {x}")
                 print(f"    y{i} = {y}\n")
                 c += 1
+            out_str = x
             if x == 1:
                 print(f"Für {num[0]}^{num[1]} mod {num[2]} = {x} gilt: x ist ein Quadrat")
             else:
