@@ -4,10 +4,6 @@ def c_string(s):
     return s
 
 
-def calc(base, exponent, mod):
-    return pow(base, exponent) % mod
-
-
 def valid_string(string, val):
     if len(string) == val:
         for n in range(0, len(string)):
@@ -38,6 +34,7 @@ def main():
         print("Multiplikation (a * b):                          mul(a,b)")
         print("Division (a / b):                                div(a,b)")
         print("Wurzel (b√ a):                                   sqrt(a[,b)])")
+        print("Exponent (a^b):                                  pow(a,b)")
         print("Modulo (a % b):                                  mod(a,b)\n")
         print("Diffie–Hellman key exchange (b^key mod N):       dhe(N,b,key_a,key_b)")
         print("Square and multiply (b^e mod N):                 sam(b,e,N)")
@@ -85,6 +82,13 @@ def main():
                 print(f"{num[1]}√{num[0]} = {out_str}")
         return
 
+    if in_str.find("pow") != -1:
+        num = c_string(in_str)
+        if valid_string(num, 2):
+            out_str = pow(int((num[0])), int((num[1])))
+            print(f"{num[0]} ^ {num[1]} = {out_str}")
+        return
+
     if in_str.find("mod") != -1:
         num = c_string(in_str)
         if valid_string(num, 2):
@@ -127,11 +131,11 @@ def main():
             priv_key_a = int(num[2])
             priv_key_b = int(num[3])
 
-            A = calc(base_g, priv_key_a, prime_p)
-            B = calc(base_g, priv_key_b, prime_p)
+            A = pow(base_g, priv_key_a) % prime_p
+            B = pow(base_g, priv_key_b) % prime_p
 
-            session_a = calc(A, priv_key_b, prime_p)
-            session_b = calc(B, priv_key_a, prime_p)
+            session_a = pow(A, priv_key_b) % prime_p
+            session_b = pow(B, priv_key_a) % prime_p
 
             print("")
             print("Key A: " + str(A))
